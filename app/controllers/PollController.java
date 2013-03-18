@@ -7,6 +7,7 @@ import models.PollMongoEntity;
 import models.PollMongoResultEntity;
 import play.Logger;
 import play.data.Form;
+import static play.data.Form.*;
 import play.libs.Akka;
 import play.mvc.Content;
 import play.mvc.Controller;
@@ -22,7 +23,7 @@ import forms.PollForm;
 
 public class PollController extends Controller {
     private static final String AKKA_POLL_LOOKUP_PREFIX = "/user/";
-    private static final Form<PollForm> pollForm = form(PollForm.class);
+    private static final Form<PollForm> pollForm = play.data.Form.form(PollForm.class);
     private static final PollMongoBL pollMongoBL = new PollMongoBL();
     public static Result showPolls() {
         if (Logger.isDebugEnabled()) {
@@ -204,7 +205,7 @@ public class PollController extends Controller {
         }
         if (pollEntity != null) {
             final Content html = views.html.doPoll.render(pollEntity, pollEntity.results,
-                form(PollEntryForm.class));
+                play.data.Form.form(PollEntryForm.class));
             res = ok(views.html.pageframe.render("content", html));
         }
         else {
@@ -219,7 +220,7 @@ public class PollController extends Controller {
         if (Logger.isDebugEnabled()) {
             Logger.debug("> PollController.savePoll(String)");
         }
-        final PollEntryForm pef = form(PollEntryForm.class).bindFromRequest().get();
+        final PollEntryForm pef = play.data.Form.form(PollEntryForm.class).bindFromRequest().get();
         // TODO Better use a cache here or store an object
         pef.participant = session().get("username");
         pef.email = session().get("email");

@@ -8,6 +8,7 @@ import models.PollMongoEntity;
 import models.UserMongoEntity;
 import play.Logger;
 import play.data.Form;
+import static play.data.Form.*;
 import play.mvc.Content;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -16,7 +17,7 @@ import util.UserMongoBL;
 import forms.RegisterLoginForm;
 
 public class UserController extends Controller {
-    private static Form<RegisterLoginForm> registerForm = form(RegisterLoginForm.class);
+    private static Form<RegisterLoginForm> registerForm = play.data.Form.form(RegisterLoginForm.class);
     private static UserMongoBL userMongoBL = new UserMongoBL();
     private static PollMongoBL pollMongoBL = new PollMongoBL();
     public static Result startUserRegister() {
