@@ -4,3 +4,11 @@
 *.jar
 *.war
 *.ear
+
+# Play directories
+target
+project/target
+
+# eclipse directories
+.settings
+
