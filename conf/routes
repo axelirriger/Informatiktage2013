@@ -1,0 +1,23 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           		controllers.Application.index()
+
+GET		/poll								controllers.PollController.newPoll()
+POST	/poll								controllers.PollController.submit()
+GET		/poll/:name							controllers.PollController.read(name: String)
+GET		/polls								controllers.PollController.showPolls()
+GET		/doPoll/:name						controllers.PollController.doPoll(name: String)
+POST	/doPoll/:name						controllers.PollController.savePoll(name: String)
+
+
+GET		/userRegister						controllers.UserController.startUserRegister()
+POST	/userRegister						controllers.UserController.registerUser()
+GET		/login								controllers.UserController.startLogin()
+POST	/login								controllers.UserController.login()
+GET		/userProfile						controllers.UserController.startUserProfile()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file              			controllers.Assets.at(path="/public", file)

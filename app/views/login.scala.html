@@ -1,0 +1,17 @@
+@(loginForm : Form[forms.RegisterLoginForm])
+
+
+	@if(play.mvc.Controller.session().get("username") == null){
+	<h1>Login!</h1>
+		@helper.form(action=routes.UserController.login()) {
+			@helper.inputText(loginForm("username"))
+			@helper.inputPassword(loginForm("password"))
+			<a id="registerLinkID" href="/userRegister">Register</a>
+			<input class="btn btn-primary" type="submit" value="Login"/>
+		}
+	}else{
+	<h1>Already logged in!</h1>
+		@helper.form(action=routes.UserController.login()) {
+		<input class="btn btn-primary" id="logoutSubmit" type="submit" value="Logout"/>
+		}
+	}

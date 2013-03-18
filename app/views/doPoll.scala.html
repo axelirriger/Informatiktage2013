@@ -1,0 +1,47 @@
+@(pollModel: models.PollMongoEntity)(pollEntries: java.util.List[models.PollMongoResultEntity])(pollForm: Form[forms.PollEntryForm])
+@import helper._;
+	<h1>@pollModel.pollName</h1>
+	
+			@helper.form(action=routes.PollController.savePoll(pollModel.pollName)) {
+	<table class="zebra-striped">
+		<thead>
+			<tr>
+			    <td>User</td>
+			    <td>Email</td>
+			    @for(optionName <- pollModel.optionsName){
+			    	<td>@optionName</td>
+			    }
+			</tr>
+		</thead>
+		<tbody>
+			@for(pollEntry <- pollEntries) {
+			<tr>
+				<td>@pollEntry.participantName</td>
+				<td>@pollEntry.email</td>
+				@for(optionValue <- pollEntry.optionValues){
+					<td>@if(optionValue){<i class="icon-ok"></i>}else{<i class="icon-remove"></i>}</td>
+				}
+			</tr>
+			}
+			<tr>
+				<td>
+				@if(play.mvc.Controller.session().get("username") != null){
+					@play.mvc.Controller.session().get("username")
+				}else{
+					@helper.inputText(pollForm("participant"))
+				}</td>
+				<td>
+				@if(play.mvc.Controller.session().get("email") != null){
+					@play.mvc.Controller.session().get("email")
+				}else{
+					@helper.inputText(pollForm("email"))
+				}</td>
+				@repeat(pollForm("optionValues"), min={pollModel.optionsName.size()}){ optionValueField =>
+					
+					<td>@helper.checkbox(optionValueField, '_label -> Messages(""), 'checked -> "unchecked")</td>
+				}
+			</tr>
+		</tbody>
+	</table>
+	<input class="btn btn-primary" type="submit"/>
+			}

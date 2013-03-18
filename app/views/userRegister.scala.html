@@ -1,0 +1,9 @@
+@(registerForm:Form[forms.RegisterLoginForm])
+
+<h1>Register!</h1>		
+		@helper.form(action=routes.UserController.registerUser()) {
+			@helper.inputText(registerForm("username"))
+			@helper.inputPassword(registerForm("password"))
+			@helper.inputText(registerForm("email"))
+			<input class="btn btn-primary" type="submit"/>
+		}

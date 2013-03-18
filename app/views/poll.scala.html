@@ -1,0 +1,19 @@
+@(pollForm: Form[forms.PollForm])
+@import helper._;
+<h1>Create your poll!</h1>		
+		@helper.form(action=routes.PollController.submit()) {
+			@helper.inputText(pollForm("pollName"))
+			@helper.textarea(pollForm("pollDescription"))
+			
+			@repeat(pollForm("optionsName"), min=1){ optionField =>
+				
+				<table>
+  				<tr>
+    				<td>@helper.inputText(optionField)</td>
+    				<td><button class="btn btn-primary" type="submit" name="action" value="@{optionField.id}" id="deleteRowID">Delete</button></td>
+ 				</tr>
+				</table>
+			}
+			<button class="btn btn-primary" type="submit" name="action" value="addRow" id="addRowID">Add Option</button>
+			<input class="btn btn-primary" type="submit" name="action" value="submit" id="submitID"/>
+		}		

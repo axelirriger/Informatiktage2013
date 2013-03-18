@@ -1,0 +1,9 @@
+@(pollModels: java.util.List[models.PollMongoEntity])
+
+	<h1>Existing Polls</h1>
+
+	<ul>
+		@for(pollModel <- pollModels) {
+		<li><a href="/doPoll/@pollModel.pollName">@pollModel.pollName</a></li>
+		}
+	</ul>

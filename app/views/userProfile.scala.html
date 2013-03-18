@@ -1,0 +1,25 @@
+@(pollCreatedModels: java.util.List[models.PollMongoEntity])(pollCompletedModels: java.util.Set[java.lang.String])
+
+	<h1>User Profile</h1>
+	<table>
+  	<tr>
+    	<td>User:</td>
+    	<td>@{play.mvc.Controller.session().get("username")}</td>
+ 	</tr>
+	</table>
+	<br />
+	<b>Polls created by me:</b>
+	<br />
+	<ul>
+		@for(pollCreatedModel <- pollCreatedModels) {
+		<li><a href="/doPoll/@pollCreatedModel.pollName">@pollCreatedModel.pollName</a></li>
+		}
+	</ul>
+	<br />
+	<b>Polls completed by me:</b>
+	<br />
+	<ul>
+		@for(pollCompletedModel <- pollCompletedModels) {
+		<li><a href="/doPoll/@pollCompletedModel">@pollCompletedModel</a></li>
+		}
+	</ul>
