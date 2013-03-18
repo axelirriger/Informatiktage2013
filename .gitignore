@@ -11,4 +11,6 @@ project/target
 
 # eclipse directories
 .settings
-
+.classpath
+.project
+.target

@@ -16,6 +16,7 @@ public class PollActor extends UntypedActor {
     private static final String AKKA_EMAIL_CREATION_PREFIX = "email_versand";
     private static final String AKKA_EMAIL_LOOKUP_PREFIX = "/user/email_versand";
     List<NewPollParticipantMessage> mailList = new ArrayList<NewPollParticipantMessage>();
+    
     /*
      * (non-Javadoc)
      * @see akka.actor.UntypedActor#onReceive(java.lang.Object)
@@ -25,20 +26,23 @@ public class PollActor extends UntypedActor {
         if (Logger.isDebugEnabled()) {
             Logger.debug("> onReceive(Object)");
         }
+    
         if (message instanceof NewPollParticipantMessage) {
             sendMailToParticipants((NewPollParticipantMessage) message);
-        }
-        else {
+        } else {
             unhandled(message);
         }
+        
         if (Logger.isDebugEnabled()) {
             Logger.debug("< onReceive(Object)");
         }
     }
+    
     private void sendMailToParticipants(final NewPollParticipantMessage message) {
         if (Logger.isDebugEnabled()) {
             Logger.debug("> sendMailToParticipants(NewPollParticipantMessage)");
         }
+        
         // TODO Ensure that you don't add the same participant twice?
         mailList.add(message);
         if (Logger.isDebugEnabled()) {
@@ -49,14 +53,17 @@ public class PollActor extends UntypedActor {
                 }
             }
         }
+
         final SendEmailMessage emailMsg = new SendEmailMessage();
         emailMsg.recipientList = this.mailList;
         ActorRef ref = lookupEmailVersandActor();
         ref.tell(emailMsg);
+        
         if (Logger.isDebugEnabled()) {
             Logger.debug("< sendMailToParticipants(NewPollParticipantMessage)");
         }
     }
+    
     /**
      * Looks up the central email delivery actor. Creates a new one if not already existing
      * @return
@@ -65,6 +72,7 @@ public class PollActor extends UntypedActor {
         if (Logger.isDebugEnabled()) {
             Logger.debug("> lookupEmailVersandActor()");
         }
+    
         ActorRef ref = Akka.system().actorFor(AKKA_EMAIL_LOOKUP_PREFIX);
         if (ref instanceof EmptyLocalActorRef) {
             if (Logger.isDebugEnabled()) {
@@ -73,6 +81,7 @@ public class PollActor extends UntypedActor {
             ref = Akka.system().actorOf(new Props(EmailVersandActor.class),
                 AKKA_EMAIL_CREATION_PREFIX);
         }
+        
         if (Logger.isDebugEnabled()) {
             Logger.debug("< lookupEmailVersandActor()");
         }
