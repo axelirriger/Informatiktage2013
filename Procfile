@@ -1,2 +1,1 @@
-web: play run -Dhttp.port=$PORT $PLAY_OPTS
-
+web: play -Dhttp.port=$PORT run $PLAY_OPTS

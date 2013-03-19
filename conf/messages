@@ -1,7 +1,1 @@
 ACTOR_AS_PARAMTER_NOT_FOUND=Actor for parameter not found in system. Actor will be created
-COMPONENT_DOES_NOT_EXIST=Component '{0}' does not exist
-COMPONENT_WILL_BE_CREATED=Component does not exist. Component will be created
-COMPONENT_CREATED=Component created
-COMPONENT_ALREADY_EXISTS=Component '{0}' does already exist
-PRICE_UPDATED=Price updated
-check_Box.text=''

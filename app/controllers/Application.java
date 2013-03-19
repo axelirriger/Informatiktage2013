@@ -8,7 +8,7 @@ public class Application extends Controller {
 
 	public static Result index() {
 		Content html = views.html.index.render("Welcome to myPoll!");
-		return ok(views.html.pageframe.render("content",html));
+		return ok(views.html.pageframe.render("content", html));
 	}
 
 }
