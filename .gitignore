@@ -8,6 +8,7 @@
 # Play directories
 target
 project/target
+logs
 
 # eclipse directories
 .settings
