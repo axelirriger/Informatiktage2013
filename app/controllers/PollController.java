@@ -2,11 +2,11 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import models.PollMongoEntity;
 import models.PollMongoResultEntity;
 import play.Logger;
 import play.data.Form;
-import static play.data.Form.*;
 import play.libs.Akka;
 import play.mvc.Content;
 import play.mvc.Controller;
@@ -218,6 +218,11 @@ public class PollController extends Controller {
 			Logger.debug("< PollController.read(String)");
 		}
 		return ok(html);
+	}
+	
+	public static Result deleteVote(String pollName, String voteId) {
+		pollMongoBL.deleteEntryFromPoll(pollName, voteId);
+		return redirect("/doPoll/"+pollName);
 	}
 
 	public static Result doPoll(String name) {
