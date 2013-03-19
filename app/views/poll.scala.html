@@ -10,10 +10,10 @@
 				<table>
   				<tr>
     				<td>@helper.inputText(optionField)</td>
-    				<td><button class="btn btn-primary" type="submit" name="action" value="@{optionField.id}" id="deleteRowID">Delete</button></td>
+    				<td><button class="btn btn-danger" type="submit" name="action" value="@{optionField.id}" id="deleteRowID"><i class="icon-remove icon-white"></i> Delete</button></td>
  				</tr>
 				</table>
 			}
-			<button class="btn btn-primary" type="submit" name="action" value="addRow" id="addRowID">Add Option</button>
-			<input class="btn btn-primary" type="submit" name="action" value="submit" id="submitID"/>
+			<button class="btn btn-primary" type="submit" name="action" value="submit" id="submitID">Create</button>
+			<button class="btn btn-inverse" type="submit" name="action" value="addRow" id="addRowID"><i class="icon-plus icon-white"></i> Add Row</button>
 		}		

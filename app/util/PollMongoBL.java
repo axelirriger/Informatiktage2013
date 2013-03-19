@@ -2,9 +2,11 @@ package util;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import models.PollMongoEntity;
 import models.PollMongoResultEntity;
+import play.Configuration;
 import play.Logger;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -147,6 +149,48 @@ public class PollMongoBL extends MongoBL {
 		// pollName);
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("< PollMongoBL.addEntryToPoll(String, PollMongoResultEntity)");
+		}
+	}
+	
+	public void deleteVote(final String pollName, final String voteId) {
+		PollMongoEntity poll = loadPoll(pollName);
+		Iterator<PollMongoResultEntity> iterator = poll.results.iterator();		
+		PollMongoResultEntity vote;
+		while (iterator.hasNext()) {
+			vote = iterator.next();
+			if (voteId.equals(vote.email)) {
+				iterator.remove();
+			}
+		}
+		savePoll(poll);
+	}
+	
+	public void deleteEntryFromPoll(final String pollName,
+			final String voteId) {
+		if (Logger.isDebugEnabled()) {
+			Logger.debug("> PollMongoBL.deleteEntryToPoll(" + pollName + ", "
+					+ voteId + ")");
+		}
+		
+		final DBObject query = new BasicDBObject();
+		query.put("_id", pollName);
+		final DBObject cursor = getCollection().findOne(query);
+		if (cursor != null) {
+			BasicDBObject object = (BasicDBObject) cursor;
+			BasicDBList resultsList = (BasicDBList) object.get("results");
+			Iterator<Object> iterator = resultsList.iterator();
+			while (iterator.hasNext()) {
+				BasicDBObject item = (BasicDBObject)iterator.next();
+				if (voteId.equals(item.getString("_id"))) {
+					iterator.remove();
+				}
+			}
+			getCollection().update(query, object);
+		}
+		
+		if (Logger.isDebugEnabled()) {
+			Logger.debug("< PollMongoBL.deleteEntryToPoll(" + pollName + ", "
+					+ voteId + ")");
 		}
 	}
 

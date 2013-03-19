@@ -3,9 +3,10 @@
 	<h1>@pollModel.pollName</h1>
 	
 			@helper.form(action=routes.PollController.savePoll(pollModel.pollName)) {
-	<table class="zebra-striped">
+	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+			    <td></td>
 			    <td>User</td>
 			    <td>Email</td>
 			    @for(optionName <- pollModel.optionsName){
@@ -16,6 +17,7 @@
 		<tbody>
 			@for(pollEntry <- pollEntries) {
 			<tr>
+				<td><a href="/deletePollEntry/@pollModel.pollName/@pollEntry.participantName"><i class="icon-remove"></i></a></td>
 				<td>@pollEntry.participantName</td>
 				<td>@pollEntry.email</td>
 				@for(optionValue <- pollEntry.optionValues){
@@ -24,13 +26,14 @@
 			</tr>
 			}
 			<tr>
-				<td>
+				<td></td>
+				<td style="vertical-align: middle;">
 				@if(play.mvc.Controller.session().get("username") != null){
 					@play.mvc.Controller.session().get("username")
 				}else{
 					@helper.inputText(pollForm("participant"))
 				}</td>
-				<td>
+				<td style="vertical-align: middle;">
 				@if(play.mvc.Controller.session().get("email") != null){
 					@play.mvc.Controller.session().get("email")
 				}else{
@@ -38,10 +41,10 @@
 				}</td>
 				@repeat(pollForm("optionValues"), min={pollModel.optionsName.size()}){ optionValueField =>
 					
-					<td>@helper.checkbox(optionValueField, '_label -> Messages(""), 'checked -> "unchecked")</td>
+					<td style="vertical-align: middle;">@helper.checkbox(optionValueField, '_label -> Messages(""), 'checked -> "unchecked")</td>
 				}
 			</tr>
 		</tbody>
 	</table>
-	<input class="btn btn-primary" type="submit"/>
+	<input class="btn btn-primary" type="submit" value="Vote"/>
 			}
