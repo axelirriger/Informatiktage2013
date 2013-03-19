@@ -260,8 +260,11 @@ public class PollController extends Controller {
 		final PollEntryForm pef = play.data.Form.form(PollEntryForm.class)
 				.bindFromRequest().get();
 		// TODO Better use a cache here or store an object
-		pef.participant = session().get("username");
-		pef.email = session().get("email");
+		if (pef.participant == null || pef.participant.length() < 1
+				|| pef.email == null || pef.email.length() < 1) {
+			pef.participant = session().get("username");
+			pef.email = session().get("email");
+		}
 		final PollMongoResultEntity pe = new PollMongoResultEntity();
 		pe.participantName = pef.participant;
 		pe.email = pef.email;
