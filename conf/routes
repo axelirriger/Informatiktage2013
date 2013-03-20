@@ -11,6 +11,7 @@ GET		/poll/:name							controllers.PollController.read(name: String)
 GET		/polls								controllers.PollController.showPolls()
 GET		/doPoll/:name						controllers.PollController.doPoll(name: String)
 POST	/doPoll/:name						controllers.PollController.savePoll(name: String)
+GET		/deletePollEntry/:name/:voteId		controllers.PollController.deleteVote(name: String, voteId: String)
 
 
 GET		/userRegister						controllers.UserController.startUserRegister()
