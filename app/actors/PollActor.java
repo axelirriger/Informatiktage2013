@@ -25,7 +25,7 @@ public class PollActor extends UntypedActor {
 	@Override
 	public void onReceive(final Object message) throws Exception {
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("> onReceive(Object)");
+			Logger.debug("> PollActor.onReceive(Object)");
 		}
 
 		if (message instanceof NewPollParticipantMessage) {
@@ -35,13 +35,13 @@ public class PollActor extends UntypedActor {
 		}
 
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("< onReceive(Object)");
+			Logger.debug("< PollActor.onReceive(Object)");
 		}
 	}
 
 	private void sendMailToParticipants(final NewPollParticipantMessage message) {
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("> sendMailToParticipants(NewPollParticipantMessage)");
+			Logger.debug("> PollActor.sendMailToParticipants(NewPollParticipantMessage)");
 		}
 
 		// TODO Ensure that you don't add the same participant twice?
@@ -62,7 +62,7 @@ public class PollActor extends UntypedActor {
 		ref.tell(emailMsg, getSelf());
 
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("< sendMailToParticipants(NewPollParticipantMessage)");
+			Logger.debug("< PollActor.sendMailToParticipants(NewPollParticipantMessage)");
 		}
 	}
 
@@ -74,7 +74,7 @@ public class PollActor extends UntypedActor {
 	 */
 	private ActorRef lookupEmailVersandActor() {
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("> lookupEmailVersandActor()");
+			Logger.debug("> PollActor.lookupEmailVersandActor()");
 		}
 
 		ActorRef ref = Akka.system().actorFor(AKKA_EMAIL_LOOKUP_PREFIX);
@@ -87,7 +87,7 @@ public class PollActor extends UntypedActor {
 		}
 
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("< lookupEmailVersandActor()");
+			Logger.debug("< PollActor.lookupEmailVersandActor()");
 		}
 		return ref;
 	}

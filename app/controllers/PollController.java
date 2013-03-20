@@ -221,8 +221,16 @@ public class PollController extends Controller {
 	}
 	
 	public static Result deleteVote(String pollName, String voteId) {
+		if(Logger.isDebugEnabled()) {
+			Logger.debug("> PollController.deleteVote(String, String)");
+		}
+
 		pollMongoBL.deleteEntryFromPoll(pollName, voteId);
-		return redirect("/doPoll/"+pollName);
+
+		if(Logger.isDebugEnabled()) {
+			Logger.debug("< PollController.deleteVote(String, String)");
+		}
+		return doPoll(pollName);
 	}
 
 	public static Result doPoll(String name) {
@@ -257,25 +265,33 @@ public class PollController extends Controller {
 		return res;
 	}
 
-	public static Result savePoll(String name) {
+	/**
+	 * Saves the given poll
+	 * @param name
+	 * @return
+	 */
+	public static Result savePoll(final String name) {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> PollController.savePoll(String)");
 		}
 		
 		final PollEntryForm pef = play.data.Form.form(PollEntryForm.class)
 				.bindFromRequest().get();
-		// TODO Better use a cache here or store an object
+
 		if (pef.participant == null || pef.participant.length() < 1
 				|| pef.email == null || pef.email.length() < 1) {
 			pef.participant = session().get("username");
 			pef.email = session().get("email");
 		}
+
 		final PollMongoResultEntity pe = new PollMongoResultEntity();
 		pe.participantName = pef.participant;
 		pe.email = pef.email;
 		pe.optionValues = new ArrayList<Boolean>(pef.optionValues);
+		
 		sendMessageToActor(name, pef.email);
 		pollMongoBL.addEntryToPoll(name, pe);
+
 		final Result res = doPoll(name);
 		
 		if (Logger.isDebugEnabled()) {
@@ -284,15 +300,29 @@ public class PollController extends Controller {
 		return res;
 	}
 
+	/**
+	 * Creates a new actor for the poll
+	 * @param name
+	 */
 	private static void createPollActor(final String name) {
 		Props props = new Props(PollActor.class);
 		Akka.system().actorOf(props, name);
 	}
 
+	/**
+	 * Informs the poll actor that a new participant registered.
+	 * 
+	 * @param pollName The poll name
+	 * @param email The participants eMail
+	 */
 	@SuppressWarnings("deprecation")
 	private static void sendMessageToActor(final String pollName,
 			final String email) {
-		ActorRef ref = Akka.system().actorFor(
+		if(Logger.isDebugEnabled()) {
+			Logger.debug("> PollController.sendMessageToActor(String, String)");
+		}
+
+		final ActorRef ref = Akka.system().actorFor(
 				AKKA_POLL_LOOKUP_PREFIX + pollName);
 		if (!(ref instanceof EmptyLocalActorRef)) {
 			final NewPollParticipantMessage pollMessage = new NewPollParticipantMessage();
@@ -300,7 +330,11 @@ public class PollController extends Controller {
 			pollMessage.pollName = pollName;
 			ref.tell(pollMessage);
 		} else {
-			// TODO What happens here? Can this happen?
+			Logger.error("A vote for a poll was given, but the poll seems not to exist. This is crazy");
+		}
+
+		if(Logger.isDebugEnabled()) {
+			Logger.debug("< PollController.sendMessageToActor(String, String)");
 		}
 	}
 }

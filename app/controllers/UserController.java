@@ -140,21 +140,29 @@ public class UserController extends Controller {
 			Logger.debug("> UserController.startUserProfile()");
 		}
 
+		Result result = null;
 		if (session().get("username") == null) {
-			return redirect("/");
+			result = redirect("/");
+		} else {
+			final List<PollMongoEntity> createdPolls = pollMongoBL
+					.loadCreatedPolls(session().get("username"));
+			final Set<String> completedList = new HashSet<String>(
+					userMongoBL.loadCompletedPollsByUser(session().get("username")));
+			long start = System.currentTimeMillis();
+			Content html = views.html.userProfile.render(createdPolls,
+					completedList);
+			long end = System.currentTimeMillis();
+
+			if (Logger.isDebugEnabled()) {
+				Logger.debug("User Profile Page loaded in " + (end - start) + " ms");
+			}
+			result = ok(views.html.pageframe.render("content", html));
 		}
-		final List<PollMongoEntity> createdPolls = pollMongoBL
-				.loadCreatedPolls(session().get("username"));
-		final Set<String> completedList = new HashSet<String>(
-				userMongoBL.loadCompletedPollsByUser(session().get("username")));
-		long start = System.currentTimeMillis();
-		Content html = views.html.userProfile.render(createdPolls,
-				completedList);
-		long end = System.currentTimeMillis();
+
 
 		if (Logger.isDebugEnabled()) {
-			Logger.debug("User Profile Page loaded in " + (end - start) + " ms");
+			Logger.debug("< UserController.startUserProfile()");
 		}
-		return ok(views.html.pageframe.render("content", html));
+		return result;
 	}
 }
