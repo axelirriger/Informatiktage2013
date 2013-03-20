@@ -289,6 +289,7 @@ public class PollController extends Controller {
 		Akka.system().actorOf(props, name);
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void sendMessageToActor(final String pollName,
 			final String email) {
 		ActorRef ref = Akka.system().actorFor(

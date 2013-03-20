@@ -12,7 +12,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class UserMongoBL extends MongoBL {
+public class UserMongoBL extends AbstractMongoBL {
 	private DBCollection collection;
 
 	public UserMongoBL() {
@@ -62,7 +62,7 @@ public class UserMongoBL extends MongoBL {
 		return result;
 	}
 
-	public void addPollToCompletedPolls(String username, String pollName) {
+	public void addPollToPollsParticipated(String username, String pollName) {
 		BasicDBObject objFind = new BasicDBObject();
 		objFind.put("_id", username);
 		DBCursor cursor = getCollection().find(objFind);

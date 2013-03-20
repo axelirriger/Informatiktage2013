@@ -3,11 +3,11 @@ package controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import models.PollMongoEntity;
 import models.UserMongoEntity;
 import play.Logger;
 import play.data.Form;
-import static play.data.Form.*;
 import play.mvc.Content;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -25,7 +25,7 @@ public class UserController extends Controller {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> UserController.startUserRegister()");
 		}
-		
+
 		long start = System.currentTimeMillis();
 		Content html = views.html.userRegister.render(registerForm);
 		long end = System.currentTimeMillis();
@@ -33,7 +33,7 @@ public class UserController extends Controller {
 			Logger.debug("Register page rendered in " + (end - start) + " ms");
 		}
 		final Result result = ok(views.html.pageframe.render("content", html));
-		
+
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("< UserController.startUserRegister()");
 		}
@@ -44,7 +44,7 @@ public class UserController extends Controller {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> UserController.registerUser()");
 		}
-		
+
 		final RegisterLoginForm user = registerForm.bindFromRequest().get();
 		Result result = null;
 		if (user.username == null || user.username.equals("")
@@ -70,7 +70,7 @@ public class UserController extends Controller {
 			}
 			result = redirect("/"); // redirect to main page
 		}
-		
+
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("< UserController.registerUser()");
 		}
@@ -81,12 +81,12 @@ public class UserController extends Controller {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> UserController.startLogin()");
 		}
-		
+
 		long start = System.currentTimeMillis();
 		Content html = views.html.login.render(registerForm);
 		long end = System.currentTimeMillis();
 		final Result result = ok(views.html.pageframe.render("content", html));
-		
+
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("Login page loaded in " + (end - start) + " ms");
 			Logger.debug("< UserController.startLogin()");
@@ -98,7 +98,7 @@ public class UserController extends Controller {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> UserController.login()");
 		}
-		
+
 		if (session().get("username") != null) {
 			session().remove("username");
 			session().remove("email");
@@ -139,7 +139,7 @@ public class UserController extends Controller {
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("> UserController.startUserProfile()");
 		}
-		
+
 		if (session().get("username") == null) {
 			return redirect("/");
 		}
@@ -151,7 +151,7 @@ public class UserController extends Controller {
 		Content html = views.html.userProfile.render(createdPolls,
 				completedList);
 		long end = System.currentTimeMillis();
-		
+
 		if (Logger.isDebugEnabled()) {
 			Logger.debug("User Profile Page loaded in " + (end - start) + " ms");
 		}
