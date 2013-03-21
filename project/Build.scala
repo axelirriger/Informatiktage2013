@@ -10,7 +10,8 @@ object ApplicationBuild extends Build {
     val appDependencies = Seq(
       // Add your project dependencies here,
 	javaCore, javaJdbc, jdbc, javaEbean,
-	"org.mongodb" % "mongo-java-driver" % "2.10.1"
+	"org.mongodb" % "mongo-java-driver" % "2.10.1",
+	"javax.mail" % "mail" % "1.4.6"
     )
 
     val main = play.Project(appName, appVersion, appDependencies).settings(

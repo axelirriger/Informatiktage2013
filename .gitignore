@@ -9,6 +9,7 @@
 target
 project/target
 logs
+bin
 
 # eclipse directories
 .settings
